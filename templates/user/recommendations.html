@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Recommendations - Laptop Price Predictor{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">💡 Laptop Recommendations</h1>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title">Filter & Sort</h6>
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.min_price.label(class="form-label") }}
+                        {% if form.min_price.errors %}
+                            {{ form.min_price(class="form-control is-invalid") }}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.min_price.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.min_price(class="form-control") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.max_price.label(class="form-label") }}
+                        {% if form.max_price.errors %}
+                            {{ form.max_price(class="form-control is-invalid") }}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.max_price.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.max_price(class="form-control") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.sort_by.label(class="form-label") }}
+                        {% if form.sort_by.errors %}
+                            {{ form.sort_by(class="form-control is-invalid") }}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.sort_by.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.sort_by(class="form-control") }}
+                        {% endif %}
+                    </div>
+
+                    {{ form.submit(class="btn btn-primary w-100") }}
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        {% if stats %}
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h6 class="text-muted">Results Found</h6>
+                        <h4>{{ stats.count }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h6 class="text-muted">Avg Price</h6>
+                        <h4>₹{{ stats.avg_price|string|replace(',', '') }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h6 class="text-muted">Avg RAM</h6>
+                        <h4>{{ stats.avg_ram }}GB</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h6 class="text-muted">GPU Models</h6>
+                        <h4>{{ stats.gpu_count }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if recommendations %}
+            {% for laptop in recommendations %}
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h5 class="card-title">{{ laptop.Brand }} - {{ laptop.Processor }}</h5>
+                            <div class="row mt-3">
+                                <div class="col-md-3">
+                                    <p><strong>💾 RAM:</strong> {{ laptop.RAM }}GB</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p><strong>🖥️ Storage:</strong> {{ laptop.Storage }}GB</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p><strong>🖨️ Screen:</strong> {{ laptop.ScreenSize }}"</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p><strong>🎮 GPU:</strong> {{ laptop.GPU }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <h4 class="text-success">₹{{ laptop.Price|int|string|replace(',', '') }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% elif form.is_submitted() %}
+            <div class="alert alert-warning">
+                No laptops found in this price range. Try adjusting your filters.
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                Select your budget range and preferences to see recommendations.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}System Info - Laptop Price Predictor{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">📋 System Information</h1>
+
+<!-- Navigation -->
+<ul class="nav nav-tabs mb-4" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="{{ url_for('admin.manage_users') }}">User Management</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="{{ url_for('admin.data_management') }}">Data Management</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="{{ url_for('admin.audit_logs') }}">Audit Logs</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" href="{{ url_for('admin.system_info') }}">System Info</a>
+    </li>
+</ul>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h6 class="mb-0">👥 User Statistics</h6>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <h6 class="text-muted">Total Users</h6>
+                        <h4>{{ info.total_users }}</h4>
+                    </div>
+                    <div class="col-6">
+                        <h6 class="text-muted">Active Users</h6>
+                        <h4 class="text-success">{{ info.active_users }}</h4>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <h6 class="text-muted">Admin Users</h6>
+                        <h4 class="text-danger">{{ info.admin_users }}</h4>
+                    </div>
+                    <div class="col-6">
+                        <h6 class="text-muted">Inactive Users</h6>
+                        <h4 class="text-warning">{{ info.inactive_users }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h6 class="mb-0">📊 Activity Statistics</h6>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <h6 class="text-muted">Total Predictions</h6>
+                        <h4>{{ info.total_predictions }}</h4>
+                    </div>
+                    <div class="col-6">
+                        <h6 class="text-muted">Avg per User</h6>
+                        <h4>{{ (info.total_predictions / info.total_users)|round(1) if info.total_users > 0 else 0 }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h6 class="mb-0">💾 Database Information</h6>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <p><strong>Total Laptops:</strong> <h5>{{ info.total_laptop_models }}</h5></p>
+                    </div>
+                    <div class="col-6">
+                        <p><strong>Unique Brands:</strong> <h5>{{ info.brands }}</h5></p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <p><strong>Unique Processors:</strong> <h5>{{ info.processors }}</h5></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h6 class="mb-0">💰 Price Range</h6>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <p><strong>Average:</strong></p>
+                        <h5>₹{{ info.avg_price|string|replace(',', '') }}</h5>
+                    </div>
+                    <div class="col-6">
+                        <p><strong>Min - Max:</strong></p>
+                        <h6>₹{{ info.min_price|string|replace(',', '') }}</h6>
+                        <h6>to ₹{{ info.max_price|string|replace(',', '') }}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

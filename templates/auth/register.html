@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Laptop Price Predictor{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg">
+            <div class="card-body p-5">
+                <h2 class="card-title text-center mb-4">📝 Register Account</h2>
+                
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.username.label(class="form-label") }}
+                        {% if form.username.errors %}
+                            {{ form.username(class="form-control is-invalid") }}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.username.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.username(class="form-control", placeholder="Username (3-80 characters)") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.email.label(class="form-label") }}
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control is-invalid") }}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.email(class="form-control", placeholder="your@email.com") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {% if form.password.errors %}
+                            {{ form.password(class="form-control is-invalid") }}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.password(class="form-control", placeholder="Min 8 chars, 1 uppercase, 1 digit, 1 special char") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.confirm_password.label(class="form-label") }}
+                        {% if form.confirm_password.errors %}
+                            {{ form.confirm_password(class="form-control is-invalid") }}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.confirm_password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.confirm_password(class="form-control", placeholder="Confirm password") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="alert alert-info" role="alert">
+                        <small>
+                            <strong>Password Requirements:</strong><br>
+                            ✓ Minimum 8 characters<br>
+                            ✓ At least 1 uppercase letter<br>
+                            ✓ At least 1 lowercase letter<br>
+                            ✓ At least 1 digit<br>
+                            ✓ At least 1 special character (!@#$%^&*...)
+                        </small>
+                    </div>
+
+                    {{ form.submit(class="btn btn-primary w-100 btn-lg") }}
+                </form>
+
+                <hr class="my-4">
+                <p class="text-center mb-0">
+                    Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

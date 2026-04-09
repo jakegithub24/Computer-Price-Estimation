@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - Laptop Price Predictor{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">👤 User Profile</h5>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Account Type:</strong> {% if user.is_admin %}<span class="badge bg-danger">Admin</span>{% else %}<span class="badge bg-success">User</span>{% endif %}</p>
+                <p><strong>Status:</strong> {% if user.is_active %}<span class="badge bg-success">Active</span>{% else %}<span class="badge bg-danger">Inactive</span>{% endif %}</p>
+                <p><strong>Member Since:</strong> {{ user.created_at.strftime('%Y-%m-%d') }}</p>
+                <p><strong>Last Login:</strong> {% if user.last_login %}{{ user.last_login.strftime('%Y-%m-%d %H:%M') }}{% else %}Never{% endif %}</p>
+                <a href="{{ url_for('auth.change_password') }}" class="btn btn-primary btn-sm w-100">🔐 Change Password</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">📋 Recent Predictions</h5>
+            </div>
+            <div class="card-body">
+                {% if predictions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Brand</th>
+                                    <th>Processor</th>
+                                    <th>RAM</th>
+                                    <th>Storage</th>
+                                    <th>Screen</th>
+                                    <th>Predicted Price</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pred in predictions[:10] %}
+                                <tr>
+                                    <td>{{ pred.brand }}</td>
+                                    <td>{{ pred.processor }}</td>
+                                    <td>{{ pred.ram }}GB</td>
+                                    <td>{{ pred.storage }}GB</td>
+                                    <td>{{ pred.screen_size }}"</td>
+                                    <td><strong>₹{{ pred.predicted_price|int|string|replace(',', '') }}</strong></td>
+                                    <td>{{ pred.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a href="{{ url_for('user.prediction_history') }}" class="btn btn-sm btn-info">View All</a>
+                {% else %}
+                    <p class="text-muted">No predictions yet. <a href="{{ url_for('user.predict') }}">Make your first prediction!</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

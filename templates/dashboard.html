@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Laptop Price Predictor{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">📊 Market Dashboard</h1>
+
+<!-- Metrics -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Average Price</h6>
+                <h3>₹{{ avg_price|default(0)|int|string|replace(',', '') }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Min Price</h6>
+                <h3>₹{{ min_price|default(0)|int|string|replace(',', '') }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Max Price</h6>
+                <h3>₹{{ max_price|default(0)|int|string|replace(',', '') }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Total Models</h6>
+                <h3>{{ total_models|default(0) }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row">
+    {% if price_dist %}
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Price Distribution</h5>
+                <img src="data:image/png;base64,{{ price_dist }}" class="img-fluid" alt="Price Distribution">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if brand_analysis %}
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Average Price by Brand</h5>
+                <img src="data:image/png;base64,{{ brand_analysis }}" class="img-fluid" alt="Brand Analysis">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% if processor_analysis %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Average Price by Processor</h5>
+                <img src="data:image/png;base64,{{ processor_analysis }}" class="img-fluid" alt="Processor Analysis">
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

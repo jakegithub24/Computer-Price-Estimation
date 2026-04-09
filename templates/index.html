@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Laptop Price Predictor{% endblock %}
+
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded-lg">
+    <h1 class="display-4">💻 Welcome to Laptop Price Predictor</h1>
+    <p class="lead">Predict laptop prices and get personalized recommendations based on your budget</p>
+    <hr class="my-4">
+    {% if current_user.is_authenticated %}
+        <p>Welcome back, <strong>{{ current_user.username }}</strong>!</p>
+        <div class="mt-4">
+            {% if current_user.is_admin %}
+                <a class="btn btn-warning btn-lg me-3" href="{{ url_for('admin.dashboard') }}" role="button">👨‍💼 Admin Dashboard</a>
+                <a class="btn btn-info btn-lg" href="{{ url_for('main.dashboard') }}" role="button">📊 Market Insights</a>
+            {% else %}
+                <a class="btn btn-primary btn-lg me-3" href="{{ url_for('user.predict') }}" role="button">🎯 Predict Price</a>
+                <a class="btn btn-success btn-lg me-3" href="{{ url_for('user.recommendations') }}" role="button">💡 Get Recommendations</a>
+                <a class="btn btn-info btn-lg" href="{{ url_for('main.dashboard') }}" role="button">📊 View Dashboard</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>Get started by logging in or creating an account</p>
+        <div class="mt-4">
+            <a class="btn btn-primary btn-lg me-3" href="{{ url_for('auth.login') }}" role="button">🔐 Login</a>
+            <a class="btn btn-success btn-lg" href="{{ url_for('auth.register') }}" role="button">📝 Register</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <h5 class="card-title">🎯 Price Prediction</h5>
+                <p class="card-text">Enter laptop specifications and get an instant price prediction using our advanced ML model.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <h5 class="card-title">💡 Smart Recommendations</h5>
+                <p class="card-text">Find the best laptops within your budget with intelligent filtering and sorting options.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <h5 class="card-title">📊 Market Analytics</h5>
+                <p class="card-text">Explore comprehensive market trends, price distributions, and brand comparisons.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

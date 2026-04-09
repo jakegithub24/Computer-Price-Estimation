@@ -1,0 +1,9 @@
+Brand,RAM,Storage,Processor,GPU,ScreenSize,Price
+HP,8,512,i5,Yes,15.6,55000
+Dell,16,512,i7,Yes,15.6,75000
+Lenovo,8,256,i5,No,14.0,45000
+HP,4,256,i3,No,14.0,30000
+Dell,16,1024,i7,Yes,17.0,90000
+Lenovo,8,512,i5,Yes,15.6,60000
+HP,16,512,i7,Yes,15.6,80000
+Dell,8,256,i5,No,14.0,40000

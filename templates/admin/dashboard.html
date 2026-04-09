@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Laptop Price Predictor{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">👨‍💼 Admin Dashboard</h1>
+
+<!-- Admin Navigation -->
+<ul class="nav nav-tabs mb-4" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="{{ url_for('admin.manage_users') }}">User Management</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="{{ url_for('admin.data_management') }}">Data Management</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="{{ url_for('admin.audit_logs') }}">Audit Logs</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="{{ url_for('admin.system_info') }}">System Info</a>
+    </li>
+</ul>
+
+<!-- Metrics -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm border-primary">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Total Users</h6>
+                <h3>{{ total_users }}</h3>
+                <small class="text-success">{{ active_users }} active</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-info">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Admin Users</h6>
+                <h3>{{ admin_count }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-success">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Total Predictions</h6>
+                <h3>{{ total_predictions }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-warning">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Laptop Models</h6>
+                <h3>{{ total_laptops }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h6 class="mb-0">👥 Recent Users</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in recent_users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td><small>{{ user.email }}</small></td>
+                                <td>{% if user.is_admin %}<span class="badge bg-danger">Admin</span>{% else %}<span class="badge bg-success">User</span>{% endif %}</td>
+                                <td><small>{{ user.created_at.strftime('%Y-%m-%d') }}</small></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <a href="{{ url_for('admin.manage_users') }}" class="btn btn-sm btn-primary">View All Users</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h6 class="mb-0">📊 Recent Predictions</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Brand</th>
+                                <th>Price</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pred in recent_predictions %}
+                            <tr>
+                                <td><small>{{ pred.user.username }}</small></td>
+                                <td>{{ pred.brand }}</td>
+                                <td>₹{{ pred.predicted_price|int|string|replace(',', '') }}</td>
+                                <td><small>{{ pred.created_at.strftime('%Y-%m-%d %H:%M') }}</small></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Market Info -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h6 class="mb-0">📈 Market Information</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <p><strong>Average Price:</strong> ₹{{ avg_price|string|replace(',', '') }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <p><strong>Total Models:</strong> {{ total_laptops }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{{ url_for('admin.data_management') }}" class="btn btn-sm btn-warning">Manage Data</a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{{ url_for('admin.system_info') }}" class="btn btn-sm btn-info">System Info</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

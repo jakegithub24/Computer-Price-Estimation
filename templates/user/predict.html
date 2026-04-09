@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Price Predictor - Laptop Price Predictor{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">🎯 Laptop Price Predictor</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <h5 class="card-title">Enter Specifications</h5>
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.brand.label(class="form-label") }}
+                        {% if form.brand.errors %}
+                            {{ form.brand(class="form-control is-invalid") }}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.brand.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.brand(class="form-control") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.processor.label(class="form-label") }}
+                        {% if form.processor.errors %}
+                            {{ form.processor(class="form-control is-invalid") }}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.processor.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.processor(class="form-control") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form.ram.label(class="form-label") }}
+                                {% if form.ram.errors %}
+                                    {{ form.ram(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.ram.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.ram(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form.storage.label(class="form-label") }}
+                                {% if form.storage.errors %}
+                                    {{ form.storage(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.storage.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.storage(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form.screen_size.label(class="form-label") }}
+                                {% if form.screen_size.errors %}
+                                    {{ form.screen_size(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.screen_size.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.screen_size(class="form-control", step="0.1") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form.gpu.label(class="form-label") }}
+                                {% if form.gpu.errors %}
+                                    {{ form.gpu(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.gpu.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.gpu(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ form.submit(class="btn btn-primary btn-lg w-100") }}
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        {% if result %}
+        <div class="card shadow-lg bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">💰 Predicted Price</h5>
+                <h2 class="display-4 mb-4">₹{{ result.price|string|replace(',', '') }}</h2>
+                
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <p><strong>Brand:</strong> {{ result.brand }}</p>
+                        <p><strong>Processor:</strong> {{ result.processor }}</p>
+                        <p><strong>RAM:</strong> {{ result.ram }}GB</p>
+                    </div>
+                    <div class="col-6">
+                        <p><strong>Storage:</strong> {{ result.storage }}GB</p>
+                        <p><strong>Screen:</strong> {{ result.screen_size }}"</p>
+                        <p><strong>GPU:</strong> {{ result.gpu }}</p>
+                    </div>
+                </div>
+                
+                <div class="alert alert-light" role="alert">
+                    <small>This is an estimated price based on market data and machine learning predictions.</small>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card shadow-lg">
+            <div class="card-body text-center py-5">
+                <h5 class="card-title">📊 Prediction Result</h5>
+                <p class="text-muted">Fill in the specifications and click "Predict Price" to see the estimated price</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
